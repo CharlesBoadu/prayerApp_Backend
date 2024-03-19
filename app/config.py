@@ -1,10 +1,13 @@
-#Configurations for connecting to a database in elephantSQL
-# import os
-# import urllib.parse as up
-# import psycopg2
-
-
-#Configurations for connecting to a database using SQLite
-# DATABASE_URI = 'sqlite:///app.db'
-# DATABASE
-# DATABASE = os.path.join(os.path.dirname(__file__), 'app.db')
+response_codes={
+    "SUCCESS":"PA00",
+    'INTERNAL_ERROR':'PA01',
+    'REQUEST_ERROR':'PA02',
+    'ALREADY_EXIST':'PA03',
+    'ADD_SUCCESS':'PA04',
+    'SIGNUP_ERROR':'PA05',
+    'USER_NOT_FOUND':'PA06',
+    'USER_DELETED' : 'PA07',
+    'ERROR_DELETION': 'PA08',
+    'DOES NOT EXIST':'PA09',
+    'SUCCESSFULLY FETCHED':'PA09'
+}
