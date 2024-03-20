@@ -30,18 +30,32 @@ class LoginService:
         """
 
         data = request.json
-        username = data.get('username')
+        email = data.get('email')
         password = data.get('password')
         connection = self.get_db_connection()
         cursor = connection.cursor()
 
-        user = cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+        user = cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
 
          # check if the user actually exists
     # take the user-supplied password, hash it, and compare it to the hashed password in the database
         if not user or not check_password_hash(user.password, password):
             return {"code": response_codes["INTERNAL_ERROR"], "message": "User not found"}
-        # return redirect(url_for('auth.login'))
+        elif user and not check_password_hash(user.password, password):
+            return {"code": response_codes["INTERNAL_ERROR"], "message": "Invalid credentials"}
+        else:
+            response = {
+                "code": response_codes["SUCCESS"],
+                "message": "Login successful",
+                'info': {
+                    "first_name":user.first_name,
+                    "last_name":user.last_name,
+                    "age": user.age,
+                    "email": user.email,
+                    "phone": user.phone,
+                },
+            }
+            return response
 
 
 
