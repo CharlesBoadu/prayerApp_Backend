@@ -24,18 +24,20 @@ try:
                                 'last_name varchar (50) NOT NULL,'
                                 'email varchar (50) NOT NULL,'
                                 'age int NOT NULL,'
-                                'phone CHAR (10) NOT NULL);'
+                                'phone CHAR (10) NOT NULL,'
+                                'password VARCHAR (100) NOT NULL);'
                                 )
 
 #      # Insert data into the table
 
-    cur.execute('INSERT INTO users (first_name, last_name, email, age, phone)'
-                'VALUES (%s, %s, %s, %s, %s)',
+    cur.execute('INSERT INTO users (first_name, last_name, email, age, phone, password)'
+                'VALUES (%s, %s, %s, %s, %s, %s)',
                 ('Charles',
                  'Boadu',
                 'cobdoc32@gmail.com',
                 24,
-                '0555105055')
+                '0555105055',
+                '$2b$05$hCERMsKPsbiVqnMfKzhmJuJQsZ4OMj.BEbQr9dL0qZbnwZp9e3X1a')
                 )
 
 
