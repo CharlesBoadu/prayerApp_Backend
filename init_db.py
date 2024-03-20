@@ -1,5 +1,6 @@
 import os
 import psycopg2
+import bcrypt
 
 db_username = os.getenv('DB_USERNAME')
 db_password = os.getenv('DB_PASSWORD')
@@ -12,7 +13,6 @@ try:
         user=os.environ['DB_USERNAME'],
         password=os.environ['DB_PASSWORD']
     )
-    print(conn.get_dsn_parameters(), "\n")
 
     # Open a cursor to perform database operations
     cur = conn.cursor()
@@ -25,20 +25,20 @@ try:
                                 'email varchar (50) NOT NULL,'
                                 'age int NOT NULL,'
                                 'phone CHAR (10) NOT NULL,'
-                                'password VARCHAR (100) NOT NULL);'
+                                'password VARCHAR (1024) NOT NULL);'
                                 )
 
 #      # Insert data into the table
 
-    cur.execute('INSERT INTO users (first_name, last_name, email, age, phone, password)'
-                'VALUES (%s, %s, %s, %s, %s, %s)',
-                ('Charles',
-                 'Boadu',
-                'cobdoc32@gmail.com',
-                24,
-                '0555105055',
-                '$2b$05$hCERMsKPsbiVqnMfKzhmJuJQsZ4OMj.BEbQr9dL0qZbnwZp9e3X1a')
-                )
+    # cur.execute('INSERT INTO users (first_name, last_name, email, age, phone, password)'
+    #             'VALUES (%s, %s, %s, %s, %s, %s)',
+    #             ('Charles',
+    #              'Boadu',
+    #             'cobdoc32@gmail.com',
+    #             24,
+    #             '0555105055',
+    #             "b'$2b$12$pAJ3J9OeEY3Fiuzj2qfI/OPqQ4zA9v80BNdJ8R6eR7apXjv3zjZIa'")
+    #             )
 
 
 #     cur.execute('INSERT INTO books (title, author, pages_num, review)'

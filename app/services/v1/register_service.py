@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import bcrypt
+import flask_bcrypt
 import psycopg2
 from werkzeug.security import check_password_hash
 from app.config import response_codes
@@ -8,7 +9,7 @@ from app.config import response_codes
 # Load environment variables from .env file
 load_dotenv()
 
-class LoginService:
+class RegisterService:
     def get_db_connection(self):
         """
         name: get_db_connection
@@ -23,9 +24,9 @@ class LoginService:
                                 password=os.getenv('DB_PASSWORD'))
         return conn
     
-    def authenticate_user(self,request): 
+    def register_user(self,request): 
         """
-            name: authenticate_user
+            name: register_user
             params: request
             description: verify credentials
             dependencies:psycopg2
@@ -33,38 +34,47 @@ class LoginService:
         """
 
         data = request.json
+        first_name = data.get('first_name')
+        last_name = data.get('last_name')
         email = data.get('email')
+        age = data.get('age')
+        phone = data.get('phone')
         password = data.get('password')
-
-        #Establishing a connection to the database
         connection = self.get_db_connection()
         cursor = connection.cursor()
 
-
         cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cursor.fetchone()
- 
-        cursor.close()
-        connection.close()
 
-        # check if the user actually exists
-        # take the user-supplied password, hash it, and compare it to the hashed password in the database
-        if not user:
-            return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "User not found"}
-        else: 
-            if not bcrypt.checkpw(password.encode('utf-8'), user[6].encode('utf-8')):
-                return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "Password is incorrect"}           
+        if user:
+            return {"statusCode": response_codes["ALREADY_EXIST"], "message": "User already exists"}
+        else:
+            hashed_pw = flask_bcrypt.generate_password_hash(password).decode('utf8')
+            cursor.execute('INSERT INTO users (first_name, last_name, email, age, phone, password)'
+                        'VALUES (%s, %s, %s, %s, %s, %s)',
+                        (first_name,
+                        last_name,
+                        email,
+                        age,
+                        phone,
+                        hashed_pw)
+                        )
+            connection.commit()
+            cursor.close()
+            connection.close()
             response = {
                 "statuCode": response_codes["SUCCESS"],
-                "message": "Login successful",
+                "message": "User registered successfully",
                 'data': {
-                    "first_name":user[1],
-                    "last_name":user[2],
-                    "age": user[3],
-                    "email": user[4],
-                    "phone": user[5],
+                    "first_name":first_name,
+                    "last_name":last_name,
+                    "age": age,
+                    "email": email,
+                    "phone": phone,
                 },
             }
             return response
+
+
     
         
