@@ -5,7 +5,7 @@ from app.services.v1.reset_password_service import ResetPasswordService
 
 
 @app.route('/app/v1/reset_password_email', methods=['POST'])
-def login():
+def send_reset_password():
     resetPasswordService = ResetPasswordService()
     result = resetPasswordService.send_reset_password(request)
     if result.get("code") == response_codes["SUCCESS"]:

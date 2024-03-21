@@ -10,13 +10,6 @@ def reset_password_template(firstname, temp_password):
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="telephone=no" name="format-detection">
     <title></title>
-    <!--[if (mso 16)]>
-    <style type="text/css">
-    a {text-decoration: none;}
-    </style>
-    <![endif]-->
-    <!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><![endif]-->
-    <!--[if gte mso 9]>
 <xml>
     <o:OfficeDocumentSettings>
     <o:AllowPNG></o:AllowPNG>
