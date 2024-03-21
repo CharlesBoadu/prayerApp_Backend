@@ -1,13 +1,31 @@
-from flask import Flask
-from app.views import auth
+# import os
+# from flask import Flask
+# from app.views import auth
+# from flask_mail import Mail
+# from dotenv import load_dotenv
 
 
-def create_app(test_config=None):
-    app = Flask(__name__)
+# # Load environment variables from .env file
+# load_dotenv()
 
-    @app.route('/')
-    def index():
-        return 'Welcome to the Prayer Application Backend! 🙏🏽'
+# # # mail configuration
+# # os.getenv['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
+# # os.getenv['MAIL_PORT'] = os.getenv('MAIL_PORT')
+# # os.getenv['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS')
+# # # os.getenv['MAIL_USE_SSL'] = MAIL_USE_SSL
+# # os.getenv['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+# # os.getenv['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 
-    app.register_blueprint(auth.auth_bp)
-    return app
+# def create_app(test_config=None):
+#     app = Flask(__name__)
+
+#     #initializations
+#     mail = Mail(app)
+
+
+#     @app.route('/')
+#     def index():
+#         return 'Welcome to the Prayer Application Backend! 🙏🏽'
+
+#     app.register_blueprint(auth.auth_bp)
+#     return app

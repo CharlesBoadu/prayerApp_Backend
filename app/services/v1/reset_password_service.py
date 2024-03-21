@@ -1,13 +1,14 @@
 import os
 from dotenv import load_dotenv
-import bcrypt
 import psycopg2
 from app.config import response_codes
+from app.libs.paswordGenerator import passwordGenerator
+from app.libs.email import send_reset_password_email
 
 # Load environment variables from .env file
 load_dotenv()
 
-class LoginService:
+class ResetPasswordService:
     def get_db_connection(self):
         """
         name: get_db_connection
@@ -22,48 +23,40 @@ class LoginService:
                                 password=os.getenv('DB_PASSWORD'))
         return conn
     
-    def authenticate_user(self,request): 
+    def send_reset_password(self,request):
         """
-            name: authenticate_user
+            name: reset_password
             params: request
-            description: verify credentials
+            description: reset user password
             dependencies:psycopg2
             references:
         """
-
         data = request.json
         email = data.get('email')
-        password = data.get('password')
-
+        
         #Establishing a connection to the database
         connection = self.get_db_connection()
         cursor = connection.cursor()
-
-
+        
         cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cursor.fetchone()
- 
-        cursor.close()
-        connection.close()
 
-        # check if the user actually exists
-        # take the user-supplied password, hash it, and compare it to the hashed password in the database
         if not user:
-            return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "User not found"}
+            return {"statusCode": response_codes["USER_NOT_FOUND"], "message": "User not found"}
         else: 
-            if not bcrypt.checkpw(password.encode('utf-8'), user[6].encode('utf-8')):
-                return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "Password is incorrect"}           
+            # hash the password
+            temp_password = passwordGenerator(10)
+        
+            cursor.execute("UPDATE users SET temp_password = %s WHERE email = %s", (temp_password, email))
+            connection.commit()
+
+            send_reset_password_email(email, user[1], temp_password)
+            
+            cursor.close()
+            connection.close()
+            
             response = {
                 "statuCode": response_codes["SUCCESS"],
-                "message": "Login successful",
-                'data': {
-                    "first_name":user[1],
-                    "last_name":user[2],
-                    "age": user[3],
-                    "email": user[4],
-                    "phone": user[5],
-                },
+                "message": "Reset Password Email Sent Successfully"
             }
             return response
-    
-        

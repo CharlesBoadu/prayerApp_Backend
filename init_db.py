@@ -25,7 +25,8 @@ try:
                                 'email varchar (50) NOT NULL,'
                                 'age int NOT NULL,'
                                 'phone CHAR (10) NOT NULL,'
-                                'password VARCHAR (1024) NOT NULL);'
+                                'password VARCHAR (1024) NOT NULL,'
+                                'temp_password VARCHAR (1024));'
                                 )
 
 #      # Insert data into the table
