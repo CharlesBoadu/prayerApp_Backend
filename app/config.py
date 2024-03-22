@@ -11,3 +11,9 @@ response_codes={
     'DOES NOT EXIST':'PA09',
     'SUCCESSFULLY FETCHED':'PA09'
 }
+
+MAIL_SERVER = 'smtp.office365.com'
+MAIL_PORT = 587
+MAIL_USE_TLS = True
+MAIL_USERNAME = 'support@mystratify.com'
+MAIL_PASSWORD = 'GdHRW5zWHTB2IIIsA85ixJhhmCaI4'

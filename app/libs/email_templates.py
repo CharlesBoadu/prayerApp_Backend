@@ -13,7 +13,7 @@ def reset_password_template(firstname, temp_password):
 <xml>
     <o:OfficeDocumentSettings>
     <o:AllowPNG></o:AllowPNG>
-    <o:PixelsPerInch>96</o:PixelsPerInch>
+    <o:PixelsPerInch></o:PixelsPerInch>
     </o:OfficeDocumentSettings>
 </xml>
 <![endif]-->
@@ -46,7 +46,6 @@ def reset_password_template(firstname, temp_password):
                                                                             <tbody>
                                                                                 <tr>
                                                                                     <td align="center" class="es-infoblock esd-block-text">
-                                                                                        <p>Put your preheader text here. <a href="https://viewstripo.email" class="view" target="_blank">View in browser</a></p>
                                                                                     </td>
                                                                                 </tr>
                                                                             </tbody>
@@ -84,7 +83,7 @@ def reset_password_template(firstname, temp_password):
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
-                                                                    </td>
+                                                                    </td> 
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -152,8 +151,10 @@ def reset_password_template(firstname, temp_password):
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td>Your Temporary Password: {temp_password}</td>
-                                                                                    <td class="esd-block-button es-p40t es-p40b es-p10r es-p10l" align="center"><span class="es-button-border"><a href="https://viewstripo.email/" class="es-button" target="_blank">RESET PASSWORD</a></span></td>
+                                                                                    <td align="center">Your Temporary Password: <h1 style="color: #333333; font-size: 20px;">{temp_password}</h1></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="esd-block-button es-p40t es-p40b es-p10r es-p10l" style="border: 1px solid blue; textAlign: center; textDecoration: none; width: content-fit" align="center"><span class="es-button-border"><a href="https://viewstripo.email/" class="es-button" target="_blank">RESET PASSWORD</a></span></td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
@@ -224,7 +225,7 @@ def reset_password_template(firstname, temp_password):
                                                                             <tbody>
                                                                                 <tr>
                                                                                     <td class="esd-block-text" esd-links-color="#666666" align="center">
-                                                                                        <p style="font-size: 14px;">Contact us: <a target="_blank" style="font-size: 14px; color: #666666;" href="tel:123456789">123456789</a> | <a target="_blank" href="mailto:your@mail.com" style="font-size: 14px; color: #666666;">your@mail.com</a></p>
+                                                                                        <p style="font-size: 14px;">Contact us: <a target="_blank" style="font-size: 14px; color: #666666;" href="tel:0555105055">0555105055</a> | <a target="_blank" href="mailto:cobdoc32@gmail.com" style="font-size: 14px; color: #666666;">cobdoc32@gmail.com</a></p>
                                                                                     </td>
                                                                                 </tr>
                                                                             </tbody>
