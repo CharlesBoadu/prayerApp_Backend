@@ -56,7 +56,7 @@ class LoginService:
             if not bcrypt.checkpw(password.encode('utf-8'), user[6].encode('utf-8')):
                 return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "Password is incorrect"}           
             response = {
-                "statuCode": response_codes["SUCCESS"],
+                "statusCode": response_codes["SUCCESS"],
                 "message": "Login successful",
                 'data': {
                     "first_name":user[1],

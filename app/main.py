@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_mail import Mail
 from app.config import MAIL_SERVER, MAIL_PORT, MAIL_USE_TLS, MAIL_USERNAME, MAIL_PASSWORD
+from flask_cors import CORS
+
 
 app = Flask(__name__)
 
@@ -15,6 +17,8 @@ app.config['MAIL_PASSWORD'] = MAIL_PASSWORD
 
 #initializations
 mail = Mail(app)
+CORS(app)
+
 
 @app.route('/')
 def index():

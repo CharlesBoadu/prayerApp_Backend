@@ -63,7 +63,7 @@ class RegisterService:
             cursor.close()
             connection.close()
             response = {
-                "statuCode": response_codes["SUCCESS"],
+                "statusCode": response_codes["SUCCESS"],
                 "message": "User registered successfully",
                 'data': {
                     "first_name":first_name,

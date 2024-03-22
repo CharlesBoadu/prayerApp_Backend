@@ -57,7 +57,7 @@ class ResetPasswordService:
             connection.close()
             
             response = {
-                "statuCode": response_codes["SUCCESS"],
+                "statusCode": response_codes["SUCCESS"],
                 "message": "Reset Password Email Sent Successfully"
             }
             return response
@@ -96,7 +96,7 @@ class ResetPasswordService:
             connection.close()
             
             response = {
-                "statuCode": response_codes["SUCCESS"],
+                "statusCode": response_codes["SUCCESS"],
                 "message": "Password Reset Successfully"
             }
             return response

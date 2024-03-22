@@ -8,7 +8,7 @@ from app.services.v1.login_service import LoginService
 def login():
     loginService = LoginService()
     result = loginService.authenticate_user(request)
-    if result.get("code") == response_codes["SUCCESS"]:
+    if result.get("statusCode") == response_codes["SUCCESS"]:
         return jsonify(result), 200
     else:
         return jsonify(result), 401
