@@ -50,6 +50,8 @@ class LoginService:
         # take the user-supplied password, hash it, and compare it to the hashed password in the database
         if not user:
             return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "User not found"}
+        elif email == "" or password == "":
+            return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "Email or password cannot be empty"}
         else: 
             if not bcrypt.checkpw(password.encode('utf-8'), user[6].encode('utf-8')):
                 return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "Password is incorrect"}           

@@ -12,3 +12,12 @@ def send_reset_password():
         return jsonify(result), 200
     else:
         return jsonify(result), 401
+    
+@app.route('/app/v1/reset_password', methods=['PUT'])
+def reset_password():
+    resetPasswordService = ResetPasswordService()
+    result = resetPasswordService.reset_password(request)
+    if result.get("code") == response_codes["SUCCESS"]:
+        return jsonify(result), 200
+    else:
+        return jsonify(result), 401
