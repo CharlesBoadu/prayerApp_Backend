@@ -31,3 +31,4 @@ if __name__ == '__main__':
 from app.controllers.v1 import login
 from app.controllers.v1 import register
 from app.controllers.v1 import reset_password
+from app.controllers.v1 import update_profile

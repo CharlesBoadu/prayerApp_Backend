@@ -49,7 +49,7 @@ class LoginService:
         # check if the user actually exists
         # take the user-supplied password, hash it, and compare it to the hashed password in the database
         if not user:
-            return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "User not found"}
+            return {"statusCode": response_codes["USER_NOT_FOUND"], "message": "User not found"}
         elif email == "" or password == "":
             return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "Email or password cannot be empty"}
         else: 
@@ -59,6 +59,7 @@ class LoginService:
                 "statusCode": response_codes["SUCCESS"],
                 "message": "Login successful",
                 'data': {
+                    "id": user[0],
                     "first_name":user[1],
                     "last_name":user[2],
                     "age": user[3],
