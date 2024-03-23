@@ -33,3 +33,4 @@ from app.controllers.v1 import register
 from app.controllers.v1 import reset_password
 from app.controllers.v1 import update_profile
 from app.controllers.v1 import update_password
+from app.controllers.v1 import prayers

@@ -17,16 +17,25 @@ try:
     # Open a cursor to perform database operations
     cur = conn.cursor()
     
-    # Execute a command: this creates a new table
+    # Execute a command: this creates a new table called users
     cur.execute('DROP TABLE IF EXISTS users;')
+    cur.execute('DROP TABLE IF EXISTS prayers;')
     cur.execute('CREATE TABLE users (id serial PRIMARY KEY,'
                                 'first_name varchar (50) NOT NULL,'
                                 'last_name varchar (50) NOT NULL,'
                                 'email varchar (50) NOT NULL,'
                                 'age int NOT NULL,'
                                 'phone CHAR (10) NOT NULL,'
+                                'role varchar (50) NOT NULL,'
                                 'password VARCHAR (1024) NOT NULL,'
                                 'temp_password VARCHAR (1024));'
+                                )
+    cur.execute('CREATE TABLE prayers (id serial PRIMARY KEY,'
+                                'prayer TEXT NOT NULL,'
+                                'scripture TEXT NOT NULL,'
+                                'user_id INT NOT NULL,'
+                                'category varchar (50) NOT NULL,'
+                                'date_added date DEFAULT CURRENT_TIMESTAMP);'
                                 )
 
 #      # Insert data into the table

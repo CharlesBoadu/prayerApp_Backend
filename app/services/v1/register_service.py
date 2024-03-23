@@ -37,6 +37,7 @@ class RegisterService:
         email = data.get('email')
         age = data.get('age')
         phone = data.get('phone')
+        role = data.get('role')
         password = data.get('password')
         connection = self.get_db_connection()
         cursor = connection.cursor()
@@ -46,19 +47,20 @@ class RegisterService:
 
         if user:
             return {"statusCode": response_codes["ALREADY_EXIST"], "message": "User already exists"}
-        elif first_name == "" or last_name == "" or age == "" or email == "" or password == "":
+        elif first_name == "" or last_name == "" or age == "" or email == "" or password == "" or phone == "" or role == "":
             return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "fields cannot be empty"}
         elif len(phone) < 10 or len(phone) > 10:
             return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "phone number should be 10 digits"}
         else:
             hashed_pw = flask_bcrypt.generate_password_hash(password).decode('utf8')
-            cursor.execute('INSERT INTO users (first_name, last_name, email, age, phone, password)'
-                        'VALUES (%s, %s, %s, %s, %s, %s)',
+            cursor.execute('INSERT INTO users (first_name, last_name, email, age, phone, role, password)'
+                        'VALUES (%s, %s, %s, %s, %s, %s, %s)',
                         (first_name,
                         last_name,
                         email,
                         age,
                         phone,
+                        role,
                         hashed_pw)
                         )
             connection.commit()
@@ -70,9 +72,10 @@ class RegisterService:
                 'data': {
                     "first_name":first_name,
                     "last_name":last_name,
-                    "age": age,
                     "email": email,
+                    "age": age,
                     "phone": phone,
+                    "role": role,
                 },
             }
             return response
