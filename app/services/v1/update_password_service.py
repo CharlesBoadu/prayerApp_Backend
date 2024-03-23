@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+import bcrypt
 import flask_bcrypt
 import psycopg2
 from app.config import response_codes
@@ -47,14 +48,12 @@ class UpdatePasswordService:
         elif old_password == "" or new_password == "" or confirm_password == "":
             return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "fields cannot be empty"}
         else:
-            hashed_old_pw = flask_bcrypt.generate_password_hash(old_password).decode('utf8')
-            hashed_new_pw = flask_bcrypt.generate_password_hash(new_password).decode('utf8')
-            hashed_confirm_pw = flask_bcrypt.generate_password_hash(confirm_password).decode('utf8')
-            if user[6] != hashed_old_pw:
+            if not bcrypt.checkpw(old_password.encode('utf-8'), user[6].encode('utf-8')):
                 return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "Incorrect old password"}
-            elif hashed_new_pw != hashed_confirm_pw:
+            elif new_password != confirm_password:
                 return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "New password and Confirm password do not match"}
             else:
+                hashed_new_pw = flask_bcrypt.generate_password_hash(new_password).decode('utf8')
                 cursor.execute('UPDATE users SET password = %s WHERE id = %s',
                            (hashed_new_pw,
                         id))
