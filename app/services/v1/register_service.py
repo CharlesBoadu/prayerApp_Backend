@@ -48,6 +48,8 @@ class RegisterService:
             return {"statusCode": response_codes["ALREADY_EXIST"], "message": "User already exists"}
         elif first_name == "" or last_name == "" or age == "" or email == "" or password == "":
             return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "fields cannot be empty"}
+        elif len(phone) < 10 or len(phone) > 10:
+            return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "phone number should be 10 digits"}
         else:
             hashed_pw = flask_bcrypt.generate_password_hash(password).decode('utf8')
             cursor.execute('INSERT INTO users (first_name, last_name, email, age, phone, password)'
