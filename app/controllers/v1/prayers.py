@@ -31,3 +31,12 @@ def getPrayerById():
         return jsonify(result), 200
     else:
         return jsonify(result), 401
+    
+@app.route('/app/v1/user/prayers', methods=['POST'])
+def getPrayersByUser():
+    getPrayersService = PrayerService()
+    result = getPrayersService.get_prayers_by_user_id(request)
+    if result.get("statusCode") == response_codes["SUCCESS"]:
+        return jsonify(result), 200
+    else:
+        return jsonify(result), 401

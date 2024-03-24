@@ -126,3 +126,37 @@ class PrayerService:
             }
         }
         return response
+    
+    def get_prayers_by_user_id(self,request):
+        """
+            name: get_prayers_by_user_id
+            params: request
+            description: get prayer by user_id
+            dependencies:psycopg2
+            references:
+        """
+        data = request.json
+        user_id = data.get('user_id')
+        connection = self.get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM prayers WHERE user_id = %s", (user_id,))
+        prayers = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        if not prayers:
+            return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "Prayer not found"}
+        response = {
+            "statusCode": response_codes["SUCCESS"],
+            "message": "Prayer retrieved successfully",
+            'data': [
+                {
+                    "id": prayer[0],
+                    "prayer": prayer[1],
+                    "scripture": prayer[2],
+                    "user_id": prayer[3],
+                    "category": prayer[4],
+                    "date_added": prayer[5]
+                } for prayer in prayers
+            ]
+        }
+        return response
