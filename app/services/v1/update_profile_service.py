@@ -46,14 +46,17 @@ class UpdateProfileService:
 
 
         if user:
-            cursor.execute('UPDATE users SET first_name = %s, last_name = %s, age = %s, phone = %s WHERE email = %s',
+            cursor.execute('UPDATE users SET first_name = %s, last_name = %s, age = %s, phone = %s, email = %s WHERE id = %s',
                         (first_name,
                         last_name,
                         age,
                         phone,
-                        email)
+                        email,
+                        id)
                         )
             connection.commit()
+            cursor.close()
+            connection.close()
             return {"statusCode": response_codes["SUCCESS"], "message": "Profile updated successfully"}
         else:
             return {"statusCode": response_codes["USER_NOT_FOUND"], "message": "User does not exist"}

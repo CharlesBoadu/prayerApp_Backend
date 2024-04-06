@@ -62,9 +62,10 @@ class LoginService:
                     "id": user[0],
                     "first_name":user[1],
                     "last_name":user[2],
-                    "age": user[3],
-                    "email": user[4],
+                    "age": user[4],
+                    "email": user[3],
                     "phone": user[5],
+                    "role": user[6]
                 },
             }
             return response

@@ -85,6 +85,7 @@ class PrayerService:
             "message": "Prayers retrieved successfully",
             'data': [
                 {
+                    "id": prayer[0],
                     "prayer": prayer[1],
                     "scripture": prayer[2],
                     "user_id": prayer[3],

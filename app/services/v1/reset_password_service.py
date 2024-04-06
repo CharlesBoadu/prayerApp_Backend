@@ -85,7 +85,7 @@ class ResetPasswordService:
         if not user:
             return {"statusCode": response_codes["USER_NOT_FOUND"], "message": "User not found"}
         else: 
-            if user[7] != temp_password:
+            if user[8] != temp_password:
                 return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "Invalid temp password"}
             
             hashed_pw = flask_bcrypt.generate_password_hash(new_password).decode('utf8')
