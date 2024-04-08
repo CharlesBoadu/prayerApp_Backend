@@ -40,3 +40,30 @@ def getPrayersByUser():
         return jsonify(result), 200
     else:
         return jsonify(result), 401
+
+@app.route('/api/v1/favorite_prayers', methods=['GET'])
+def getFavoritePrayers():
+    getPrayersService = PrayerService()
+    result = getPrayersService.get_favorite_prayers(request)
+    if result.get("statusCode") == response_codes["SUCCESS"]:
+        return jsonify(result), 200
+    else:
+        return jsonify(result), 401
+
+@app.route('/api/v1/favorite_prayers/new', methods=['POST'])
+def addPrayerToFavorites():
+    getPrayersService = PrayerService()
+    result = getPrayersService.add_prayer_to_favorites(request)
+    if result.get("statusCode") == response_codes["SUCCESS"]:
+        return jsonify(result), 200
+    else:
+        return jsonify(result), 401
+    
+@app.route('/api/v1/user/favorite_prayers', methods=['POST'])
+def getFavoritePrayersByUser():
+    getPrayersService = PrayerService()
+    result = getPrayersService.get_favorite_prayers_by_user(request)
+    if result.get("statusCode") == response_codes["SUCCESS"]:
+        return jsonify(result), 200
+    else:
+        return jsonify(result), 401
