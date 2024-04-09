@@ -90,8 +90,7 @@ class PrayerService:
                     "scripture": prayer[2],
                     "user_id": prayer[3],
                     "category": prayer[4],
-                    "is_favorite": prayer[5],
-                    "date_added": prayer[6]
+                    "date_added": prayer[5]
                 } for prayer in prayers
             ]
         }
@@ -276,8 +275,7 @@ class PrayerService:
                     "scripture": prayer[2],
                     "user_id": prayer[3],
                     "category": prayer[4],
-                    "is_favorite": prayer[5],
-                    "date_added": prayer[6]
+                    "date_added": prayer[5]
                 } for prayer in prayers
             ]
         }
