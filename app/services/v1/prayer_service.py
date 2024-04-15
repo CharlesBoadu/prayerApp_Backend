@@ -46,7 +46,7 @@ class PrayerService:
         if prayer == "" or scripture == "" or category == "" or user_id == "":
             return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "Prayer, category or user_id cannot be empty"}
         elif not user:
-            return {"statusCode": response_codes["USER_NOT_FOUND"], "message": "User not found"}
+            return {"statusCode": response_codes["NOT_FOUND"], "message": "User not found"}
         else:
             cursor.execute("INSERT INTO prayers (prayer, scripture, user_id, category) VALUES (%s, %s, %s, %s)", (prayer, scripture, user_id, category))
             connection.commit()
@@ -90,7 +90,8 @@ class PrayerService:
                     "scripture": prayer[2],
                     "user_id": prayer[3],
                     "category": prayer[4],
-                    "date_added": prayer[5]
+                    "is_favorite": prayer[5],
+                    "date_added": prayer[6]
                 } for prayer in prayers
             ]
         }
@@ -157,7 +158,8 @@ class PrayerService:
                     "scripture": prayer[2],
                     "user_id": prayer[3],
                     "category": prayer[4],
-                    "date_added": prayer[5]
+                    "is_favorite": prayer[5],
+                    "date_added": prayer[6]
                 } for prayer in prayers
             ]
         }
@@ -194,6 +196,7 @@ class PrayerService:
                 return {"statusCode": response_codes["ALREADY_EXIST"], "message": "Prayer already added to Favorites"}
             
             cursor.execute("INSERT INTO favorite_prayers (id, prayer, scripture, user_id, category) VALUES (%s, %s, %s, %s, %s)", (prayer_id, prayer, scripture, user_id, category))
+            cursor.execute("UPDATE prayers SET is_favorite = TRUE WHERE id = %s AND user_id = %s", (prayer_id, user_id))
             connection.commit()
 
             cursor.close()
@@ -278,5 +281,36 @@ class PrayerService:
                     "date_added": prayer[5]
                 } for prayer in prayers
             ]
+        }
+        return response
+    
+    def remove_prayer_from_favorites(self,request): 
+        """
+            name: remove_prayer_from_favorites
+            params: request
+            description: Remove prayer from favorites
+            dependencies:psycopg2
+            references:
+        """
+        connection = self.get_db_connection()
+        cursor = connection.cursor()
+        data = request.json
+        user_id = data.get('user_id')
+        prayer_id = data.get('prayer_id')
+        cursor.execute("SELECT * FROM favorite_prayers WHERE user_id = %s AND id = %s", (user_id, prayer_id))
+        prayer = cursor.fetchone()
+        
+        if not prayer:
+            return {"statusCode": response_codes["SUCCESS"], "message": "Favorite Prayer Does not exist", "data": []}
+        
+        cursor.execute("DELETE FROM favorite_prayers WHERE user_id = %s AND id = %s", (user_id, prayer_id))
+        cursor.execute("UPDATE prayers SET is_favorite = FALSE WHERE id = %s AND user_id = %s", (prayer_id, user_id))
+        connection.commit()
+
+        cursor.close()
+        connection.close()
+        response = {
+            "statusCode": response_codes["SUCCESS"],
+            "message": "Favorite Prayer removed successfully",
         }
         return response

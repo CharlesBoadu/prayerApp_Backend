@@ -29,7 +29,9 @@ try:
                                 'age int NOT NULL,'
                                 'phone CHAR (10) NOT NULL,'
                                 'role varchar (50) NOT NULL,'
-                                'password VARCHAR (1024) NOT NULL,'
+                                'organization varchar (50),'
+                                'organization_id varchar (50),'
+                                'password VARCHAR (1024),'
                                 'temp_password VARCHAR (1024));'
                                 )
     cur.execute('CREATE TABLE prayers (id serial PRIMARY KEY,'
@@ -37,6 +39,7 @@ try:
                                 'scripture TEXT NOT NULL,'
                                 'user_id INT NOT NULL,'
                                 'category varchar (50) NOT NULL,'
+                                'is_favorite BOOLEAN NOT NULL DEFAULT false,'
                                 'date_added date DEFAULT CURRENT_TIMESTAMP);'
                                 )
     

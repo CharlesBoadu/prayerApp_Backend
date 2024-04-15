@@ -14,6 +14,15 @@ def register():
         return jsonify(result), 200
     else:
         return jsonify(result), 401
+    
+@app.route('/api/v1/user/register', methods=['POST'])
+def registeration_by_admin():
+    registerService = RegisterService()
+    result = registerService.register_user_by_admin(request)
+    if result.get("statusCode") == response_codes["SUCCESS"]:
+        return jsonify(result), 200
+    else:
+        return jsonify(result), 401
 
 @app.route('/api/v1/login', methods=['POST'])
 def login():

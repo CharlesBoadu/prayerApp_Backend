@@ -43,7 +43,7 @@ class ResetPasswordService:
         user = cursor.fetchone()
 
         if not user:
-            return {"statusCode": response_codes["USER_NOT_FOUND"], "message": "User not found"}
+            return {"statusCode": response_codes["NOT_FOUND"], "message": "User not found"}
         else: 
             # hash the password
             temp_password = passwordGenerator(10)
@@ -83,7 +83,7 @@ class ResetPasswordService:
         user = cursor.fetchone()
 
         if not user:
-            return {"statusCode": response_codes["USER_NOT_FOUND"], "message": "User not found"}
+            return {"statusCode": response_codes["NOT_FOUND"], "message": "User not found"}
         else: 
             if user[8] != temp_password:
                 return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "Invalid temp password"}

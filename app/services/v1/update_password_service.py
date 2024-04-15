@@ -44,7 +44,7 @@ class UpdatePasswordService:
         user = cursor.fetchone()
 
         if not user:
-            return {"statusCode": response_codes["USER_NOT_FOUND"], "message": "User not found"}
+            return {"statusCode": response_codes["NOT_FOUND"], "message": "User not found"}
         elif old_password == "" or new_password == "" or confirm_password == "":
             return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "fields cannot be empty"}
         else:

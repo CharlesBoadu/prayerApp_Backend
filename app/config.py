@@ -5,7 +5,7 @@ response_codes={
     'ALREADY_EXIST':'PA03',
     'ADD_SUCCESS':'PA04',
     'SIGNUP_ERROR':'PA05',
-    'USER_NOT_FOUND':'PA06',
+    'NOT_FOUND':'PA06',
     'USER_DELETED' : 'PA07',
     'ERROR_DELETION': 'PA08',
     'DOES NOT EXIST':'PA09',

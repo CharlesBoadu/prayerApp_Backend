@@ -67,3 +67,12 @@ def getFavoritePrayersByUser():
         return jsonify(result), 200
     else:
         return jsonify(result), 401
+    
+@app.route('/api/v1/user/favorite_prayers', methods=['DELETE'])
+def removeFavoritePrayer():
+    getPrayersService = PrayerService()
+    result = getPrayersService.remove_prayer_from_favorites(request)
+    if result.get("statusCode") == response_codes["SUCCESS"]:
+        return jsonify(result), 200
+    else:
+        return jsonify(result), 401

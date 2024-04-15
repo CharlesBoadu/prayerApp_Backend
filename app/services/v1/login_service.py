@@ -49,11 +49,11 @@ class LoginService:
         # check if the user actually exists
         # take the user-supplied password, hash it, and compare it to the hashed password in the database
         if not user:
-            return {"statusCode": response_codes["USER_NOT_FOUND"], "message": "User not found"}
+            return {"statusCode": response_codes["NOT_FOUND"], "message": "User not found"}
         elif email == "" or password == "":
             return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "Email or password cannot be empty"}
         else: 
-            if not bcrypt.checkpw(password.encode('utf-8'), user[7].encode('utf-8')):
+            if not bcrypt.checkpw(password.encode('utf-8'), user[9].encode('utf-8')):
                 return {"statusCode": response_codes["INTERNAL_ERROR"], "message": "Password is incorrect"}           
             response = {
                 "statusCode": response_codes["SUCCESS"],
@@ -65,7 +65,8 @@ class LoginService:
                     "age": user[4],
                     "email": user[3],
                     "phone": user[5],
-                    "role": user[6]
+                    "role": user[6],
+                    "organization": user[7],
                 },
             }
             return response

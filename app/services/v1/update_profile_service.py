@@ -59,4 +59,4 @@ class UpdateProfileService:
             connection.close()
             return {"statusCode": response_codes["SUCCESS"], "message": "Profile updated successfully"}
         else:
-            return {"statusCode": response_codes["USER_NOT_FOUND"], "message": "User does not exist"}
+            return {"statusCode": response_codes["NOT_FOUND"], "message": "User does not exist"}

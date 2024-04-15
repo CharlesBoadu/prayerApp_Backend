@@ -82,9 +82,8 @@ class UsersService:
             }
             return response
         else:
-            return {"statusCode": response_codes["USER_NOT_FOUND"], "message": "User does not exist"}
+            return {"statusCode": response_codes["NOT_FOUND"], "message": "User does not exist"}
         
-
     def delete_user(self,request,id):
         """
             name: delete_user
@@ -103,7 +102,7 @@ class UsersService:
             connection.commit()
             return {"statusCode": response_codes["SUCCESS"], "message": "User deleted successfully"}
         else:
-            return {"statusCode": response_codes["USER_NOT_FOUND"], "message": "User does not exist"}
+            return {"statusCode": response_codes["NOT_FOUND"], "message": "User does not exist"}
         
     def update_user(self,request,id):
         """
@@ -140,4 +139,4 @@ class UsersService:
             connection.commit()
             return {"statusCode": response_codes["SUCCESS"], "message": "User updated successfully"}
         else:
-            return {"statusCode": response_codes["USER_NOT_FOUND"], "message": "User does not exist"}
+            return {"statusCode": response_codes["NOT_FOUND"], "message": "User does not exist"}
