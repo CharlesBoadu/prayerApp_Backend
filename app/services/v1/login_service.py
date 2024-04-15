@@ -67,6 +67,7 @@ class LoginService:
                     "phone": user[5],
                     "role": user[6],
                     "organization": user[7],
+                    "organization_id": user[8]
                 },
             }
             return response
