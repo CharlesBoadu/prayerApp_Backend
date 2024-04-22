@@ -4,6 +4,8 @@ import psycopg2
 from app.config import response_codes
 
 
+
+
 # Load environment variables from .env file
 load_dotenv()
 
@@ -53,7 +55,7 @@ class UsersService:
 
         return response
     
-    def get_user(self,request,id): 
+    def get_user(self,request): 
         """
             name: get_user
             params: request
@@ -63,9 +65,13 @@ class UsersService:
         """
         connection = self.get_db_connection()
         cursor = connection.cursor()
-
-        cursor.execute("SELECT * FROM users WHERE id = %s", (id,))
+        data = request.json
+        user_id = data.get('user_id')
+        organization_id = data.get('organization_id')
+        
+        cursor.execute("SELECT * FROM users WHERE id = %s AND organization_id = %s", (user_id, organization_id))
         user = cursor.fetchone()
+
         if user:
             response = {
                 "statusCode": response_codes["SUCCESS"],
@@ -78,11 +84,49 @@ class UsersService:
                     "age": user[4],
                     "phone": user[5],
                     "role": user[6],
+                    "organization": user[7],
                 }
             }
             return response
         else:
             return {"statusCode": response_codes["NOT_FOUND"], "message": "User does not exist"}
+        
+    def get_users_by_organization(self,request): 
+        """
+            name: get_users_by_organization
+            params: request
+            description: get users by Organization using Organization ID
+            dependencies:psycopg2
+            references:
+        """
+        connection = self.get_db_connection()
+        cursor = connection.cursor()
+
+        data = request.json
+        organization_id = data.get('organization_id')
+        
+
+        cursor.execute("SELECT * FROM users WHERE organization_id = %s", (organization_id,))
+        users = cursor.fetchall()
+        if users:
+            response = {
+                "statusCode": response_codes["SUCCESS"],
+                "message": "User retrieved successfully",
+                'data': [
+                            {
+                                "id": user[0],
+                                "first_name": user[1],
+                                "last_name": user[2],
+                                "email": user[3],
+                                "age": user[4],
+                                "phone": user[5],
+                                "role": user[6],
+                            } for user in users
+                        ],
+                    }
+            return response
+        else:
+            return {"statusCode": response_codes["NOT_FOUND"], "message": "Organization Does not Exist"}
         
     def delete_user(self,request,id):
         """
