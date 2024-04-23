@@ -49,6 +49,7 @@ class UsersService:
                                 "age": user[4],
                                 "phone": user[5],
                                 "role": user[6],
+                                "organization": user[7],
                             } for user in users
                         ],
                     }
@@ -121,6 +122,7 @@ class UsersService:
                                 "age": user[4],
                                 "phone": user[5],
                                 "role": user[6],
+                                "organization": user[7],
                             } for user in users
                         ],
                     }
