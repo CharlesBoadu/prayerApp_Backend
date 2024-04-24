@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import psycopg2
 from app.config import response_codes
+from flask import jsonify
 
 
 
@@ -123,6 +124,7 @@ class UsersService:
                                 "phone": user[5],
                                 "role": user[6],
                                 "organization": user[7],
+                                "organization_id": user[8],
                             } for user in users
                         ],
                     }
@@ -130,7 +132,7 @@ class UsersService:
         else:
             return {"statusCode": response_codes["NOT_FOUND"], "message": "Organization Does not Exist"}
         
-    def delete_user(self,request,id):
+    def delete_user(self,request):
         """
             name: delete_user
             params: request
@@ -140,17 +142,20 @@ class UsersService:
         """
         connection = self.get_db_connection()
         cursor = connection.cursor()
+        data = request.json
+        user_id = data.get('user_id')
+        organization_id = data.get('organization_id')
 
-        cursor.execute("SELECT * FROM users WHERE id = %s", (id,))
+        cursor.execute("SELECT * FROM users WHERE id = %s AND organization_id = %s", (user_id, organization_id))
         user = cursor.fetchone()
         if user:
-            cursor.execute("DELETE FROM users WHERE id = %s", (id,))
+            cursor.execute("DELETE FROM users WHERE id = %s AND organization_id = %s", (user_id, organization_id))
             connection.commit()
             return {"statusCode": response_codes["SUCCESS"], "message": "User deleted successfully"}
         else:
             return {"statusCode": response_codes["NOT_FOUND"], "message": "User does not exist"}
         
-    def update_user(self,request,id):
+    def update_user(self,request):
         """
             name: update_user
             params: request
@@ -161,28 +166,44 @@ class UsersService:
         connection = self.get_db_connection()
         cursor = connection.cursor()
 
-        cursor.execute("SELECT * FROM users WHERE id = %s", (id,))
+        data = request.json
+        organization_id = data.get('organization_id')
+        user_id = data.get('user_id')
+
+        cursor.execute("SELECT * FROM users WHERE id = %s AND organization_id = %s", (user_id, organization_id))
         user = cursor.fetchone()
 
-        data = request.json
         first_name = data.get('first_name')
         last_name = data.get('last_name')
         email = data.get('email')
         age = data.get('age')
         phone = data.get('phone')
         role = data.get('role')
+        
 
         if user:
-            cursor.execute('UPDATE users SET first_name = %s, last_name = %s, email = %s, age = %s, phone = %s, role = %s WHERE id = %s',
+            cursor.execute('UPDATE users SET first_name = %s, last_name = %s, email = %s, age = %s, phone = %s, role = %s WHERE id = %s AND organization_id = %s',
                         (first_name,
                         last_name,
                         email,
                         age,
                         phone,
                         role,
-                        id)
+                        user_id,
+                        organization_id
+                        )
                         )
             connection.commit()
-            return {"statusCode": response_codes["SUCCESS"], "message": "User updated successfully"}
+            return {"statusCode": response_codes["SUCCESS"], "message": "User updated successfully", "data": {
+                    "id": user_id,
+                    "first_name": first_name,
+                    "last_name": last_name,
+                    "email": email,
+                    "age": age,
+                    "phone": phone,
+                    "role": role,
+                    "organization_id": organization_id
+                
+            }}
         else:
             return {"statusCode": response_codes["NOT_FOUND"], "message": "User does not exist"}
