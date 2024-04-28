@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
 
 from app.controllers.v1 import auth
-from app.controllers.v1 import profile
+from app.controllers.v1 import account
 from app.controllers.v1 import prayers
 from app.controllers.v1 import users
 from app.controllers.v1 import organization

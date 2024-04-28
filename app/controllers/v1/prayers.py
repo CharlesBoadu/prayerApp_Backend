@@ -41,7 +41,7 @@ def getPrayersByUser():
     else:
         return jsonify(result), 401
 
-@app.route('/api/v1/favorite_prayers', methods=['GET'])
+@app.route('/api/v1/favorite-prayers', methods=['GET'])
 def getFavoritePrayers():
     getPrayersService = PrayerService()
     result = getPrayersService.get_favorite_prayers(request)
@@ -50,7 +50,7 @@ def getFavoritePrayers():
     else:
         return jsonify(result), 401
 
-@app.route('/api/v1/favorite_prayers/new', methods=['POST'])
+@app.route('/api/v1/favorite-prayers/new', methods=['POST'])
 def addPrayerToFavorites():
     getPrayersService = PrayerService()
     result = getPrayersService.add_prayer_to_favorites(request)
@@ -59,7 +59,7 @@ def addPrayerToFavorites():
     else:
         return jsonify(result), 401
     
-@app.route('/api/v1/user/favorite_prayers', methods=['POST'])
+@app.route('/api/v1/user/favorite-prayers', methods=['POST'])
 def getFavoritePrayersByUser():
     getPrayersService = PrayerService()
     result = getPrayersService.get_favorite_prayers_by_user(request)
@@ -68,7 +68,7 @@ def getFavoritePrayersByUser():
     else:
         return jsonify(result), 401
     
-@app.route('/api/v1/user/favorite_prayers', methods=['DELETE'])
+@app.route('/api/v1/user/favorite-prayers', methods=['DELETE'])
 def removeFavoritePrayer():
     getPrayersService = PrayerService()
     result = getPrayersService.remove_prayer_from_favorites(request)
