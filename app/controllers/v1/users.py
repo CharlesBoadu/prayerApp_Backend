@@ -7,8 +7,10 @@ from app.config import (CODE_SUCCESS, CODE_FAILURE, CODE_SERVICE_INTERNAL_ERROR,
 from app.libs.decorators import Decorators
 
 required_params = Decorators()
+jwt_token_required = Decorators()
 
 @app.route('/api/v1/users', methods=['GET'])
+@jwt_token_required.token_required
 def getUsers():
     getUsersService = UsersService()
     result = getUsersService.get_users(request)
@@ -19,6 +21,7 @@ def getUsers():
     
 
 @app.route('/api/v1/user', methods=['POST'])
+@jwt_token_required.token_required
 @required_params.required_params('user_id', 'organization_id')    
 def getUserById():
     try:
@@ -39,6 +42,7 @@ def getUserById():
 
 
 @app.route('/api/v1/users/organization', methods=['POST'])
+@jwt_token_required.token_required
 def getUsersByOrganization():
     getUsersService = UsersService()
     result = getUsersService.get_users_by_organization(request)
@@ -48,6 +52,7 @@ def getUsersByOrganization():
         return jsonify(result), 401
     
 @app.route('/api/v1/user', methods=['DELETE'])
+@jwt_token_required.token_required
 @required_params.required_params('user_id', 'organization_id')    
 def deleteUser():
     try:
@@ -67,6 +72,7 @@ def deleteUser():
         return jsonify(code=CODE_SERVICE_INTERNAL_ERROR, message=en['ERROR_OCCURRED'].format(str(ex))), 500
     
 @app.route('/api/v1/user', methods=['PUT'])
+@jwt_token_required.token_required
 @required_params.required_params('user_id', 'organization_id')    
 def updateUser():
     try:

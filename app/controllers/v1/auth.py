@@ -29,6 +29,7 @@ def getToken():
         return jsonify(code=CODE_SERVICE_INTERNAL_ERROR, msg=en['ERROR_OCCURRED'].format(str(ex))), 500
     
 @app.route('/api/v1/register', methods=['POST'])
+@jwt_token_required.token_required
 def register():
     registerService = RegisterService()
     result = registerService.register_user(request)
@@ -38,6 +39,7 @@ def register():
         return jsonify(result), 401
     
 @app.route('/api/v1/user/register', methods=['POST'])
+@jwt_token_required.token_required
 def registeration_by_admin():
     registerService = RegisterService()
     result = registerService.register_user_by_admin(request)
@@ -57,6 +59,7 @@ def login():
         return jsonify(result), 401
     
 @app.route('/api/v1/reset-password-email', methods=['POST'])
+@jwt_token_required.token_required
 def send_reset_password():
     resetPasswordService = ResetPasswordService()
     result = resetPasswordService.send_reset_password(request)
@@ -66,6 +69,7 @@ def send_reset_password():
         return jsonify(result), 401
     
 @app.route('/api/v1/reset-password', methods=['PUT'])
+@jwt_token_required.token_required
 def reset_password():
     resetPasswordService = ResetPasswordService()
     result = resetPasswordService.reset_password(request)
