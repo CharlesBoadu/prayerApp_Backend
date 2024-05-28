@@ -11,6 +11,10 @@ import flask_bcrypt
 from app.libs.email import send_reset_password_email
 from app.config import response_codes, CODE_SUCCESS, CODE_FAILURE, MODEL_VERSION
 from app.config import en
+import hashlib
+import binascii
+import secrets
+
 
 
 # Load environment variables from .env file
@@ -415,13 +419,20 @@ class PassportService:
             connection = self.get_db_connection()
             cursor = connection.cursor()
 
-            # auth_client = cursor.execute("SELECT * FROM users WHERE email = %s", (username,))
+            # def generate_salt():
+            #     return secrets.token_bytes(16)
 
-            # auth_client = Passport()
+            # # auth_client = cursor.execute("SELECT * FROM users WHERE email = %s", (username,))
+
+            # # auth_client = Passport()
+            # salt = generate_salt()
+            # hashed_password = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), salt, 100000)
+            # print("Hashed password", hashed_password)
+
+            # cursor.execute("UPDATE passport SET password = %s WHERE id = %s", (hashed_password, 1))
 
             cursor.execute("SELECT * FROM passport WHERE client_id = %s AND username = %s", (client_id, username))
             res = cursor.fetchone()
-            print("password", res)
             # auth_client.get_by_username(client_id=client_id,username=username)
 
             hashed_password = res[3]
