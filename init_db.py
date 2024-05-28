@@ -21,6 +21,7 @@ try:
     cur.execute('DROP TABLE IF EXISTS users;')
     cur.execute('DROP TABLE IF EXISTS prayers;')
     cur.execute('DROP TABLE IF EXISTS favorite_prayers;')
+    cur.execute('DROP TABLE IF EXISTS passport;')
 
     cur.execute('CREATE TABLE users (id serial PRIMARY KEY,'
                                 'first_name varchar (50) NOT NULL,'
@@ -50,6 +51,18 @@ try:
                                 'category varchar (50) NOT NULL,'
                                 'date_added date DEFAULT CURRENT_TIMESTAMP);'
                                 )
+    
+    cur.execute('CREATE TABLE passport (id INT PRIMARY KEY,'
+                                'username TEXT NOT NULL,'
+                                'description TEXT NOT NULL,'
+                                'password VARCHAR (1024),'
+                                'secret varchar (1024),'
+                                'created_at date DEFAULT CURRENT_TIMESTAMP,'
+                                'updated_at date DEFAULT CURRENT_TIMESTAMP,'
+                                'client_id varchar (250) NOT NULL);'
+                                )
+    
+    cur.execute("INSERT INTO passport (id, username, description, password, secret, client_id) VALUES (1, 'prayer-client-app', 'A new passport client', '', '', '05e8afda5e4f47dca3a4cc41c489fe72')",)
 
 #      # Insert data into the table
 

@@ -11,6 +11,8 @@ response_codes={
     'DOES NOT EXIST':'PA09',
     'SUCCESSFULLY FETCHED':'PA09'
 }
+MODEL_VERSION = "1.0.0"
+
 
 # **************** Custom Service Status Codes ****************
 CODE_SUCCESS = "PA00"

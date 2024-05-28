@@ -9,6 +9,9 @@ from functools import wraps
 from flask import request, jsonify
 import json
 import traceback
+from jose.jwt import  decode
+from jose.exceptions import ExpiredSignatureError
+import os
 
 class Decorators:
     """
@@ -61,3 +64,27 @@ class Decorators:
                 return wrapped
 
             return wrapper
+    
+    # decorator for verifying the JWT
+    def token_required(self, f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            try:
+                  
+                    token = request.headers.get('Authorization')
+                    #token = token.removeprefix('Bearer ')
+                    if token:
+                        try:
+                            #decode_jwt(token)
+                            decode(token, os.getenv("SECRET_KEY"), algorithms=[os.getenv('JWT_ALGORITHM')])
+                            return f(*args, **kwargs)
+                        except ExpiredSignatureError:
+                            return jsonify({'message': 'Token has expired'}), 401
+                    return jsonify({'message': 'Token is missing or invalid'}), 401
+                     
+            except Exception as ex:
+            
+                response = {"code": "DE01", "msg": f"AuthError: {ex}", "data": {}}
+                return jsonify(**response), 500
+            
+        return decorated

@@ -6,8 +6,11 @@ from app.config import response_codes
 from app.libs.email import send_invite_user_mail
 from app.libs.paswordGenerator import passwordGenerator
 from app.libs.utils import Utilities
+from jose.jwt import encode, decode, ExpiredSignatureError
 import flask_bcrypt
 from app.libs.email import send_reset_password_email
+from app.config import response_codes, CODE_SUCCESS, CODE_FAILURE, MODEL_VERSION
+from app.config import en
 
 
 # Load environment variables from .env file
@@ -322,7 +325,6 @@ class ResetPasswordService:
             }
             return response
         
-
 class UpdatePasswordService:
     def get_db_connection(self):
         """
@@ -380,3 +382,68 @@ class UpdatePasswordService:
                     "message": "User Password updated successfully",
                 }
                 return response
+            
+class PassportService:
+    def get_db_connection(self):
+        """
+        name: get_db_connection
+        params: null
+        description: connect to postgresql db using psycopg2
+        dependencies:psycopg2
+        references:
+        """
+        conn = psycopg2.connect(host='localhost',
+                                database='prayer_app',
+                                user=os.getenv('DB_USERNAME'),
+                                password=os.getenv('DB_PASSWORD'))
+        return conn 
+    
+    def fetch_auth_token(self,request_data):
+        """
+        name: fetch token
+        params: null
+        description: Fetching a token to authenticate requests
+        dependencies:psycopg2
+        references:
+        """
+        try:
+            utils = Utilities()
+            password  = request_data['password']
+            client_id = request_data['client_id']
+            username  = request_data['username']
+
+            connection = self.get_db_connection()
+            cursor = connection.cursor()
+
+            # auth_client = cursor.execute("SELECT * FROM users WHERE email = %s", (username,))
+
+            # auth_client = Passport()
+
+            cursor.execute("SELECT * FROM passport WHERE client_id = %s AND username = %s", (client_id, username))
+            res = cursor.fetchone()
+            print("password", res)
+            # auth_client.get_by_username(client_id=client_id,username=username)
+
+            hashed_password = res[3]
+
+            password_check = utils.verify_password(hashed_password, password)
+
+            if password_check:
+                payload = {
+                        'username': username,
+                        #'exp': datetime.utcnow() + timedelta(seconds= int (os.getenv('JWT_EXP_DELTA_SECONDS')))
+                    }
+                token = encode(payload, os.getenv("SECRET_KEY"), algorithm= os.getenv('JWT_ALGORITHM'))
+                
+                return {"code": CODE_SUCCESS, "msg": en['OPERATION_SUCCESSFUL'], "version": MODEL_VERSION, "token": token}
+
+            else:
+                
+                return {"code": CODE_SUCCESS, "msg": 'Authentication Failed', "version": MODEL_VERSION, "token": ''}
+
+        except Exception as expt:
+            print(expt)
+            print("####ocurred here -> in Service")
+            # Logger.log_to_console(__name__, "ERROR", f"{en['ERROR_OCCURRED']}{str(expt)}", CODE_FAILURE, "")
+            return {"code": CODE_FAILURE, "msg": f" {en['ERROR_OCCURRED']}{str(expt)}", "version": MODEL_VERSION,
+                    "data": []}
