@@ -27,7 +27,7 @@ def getPrayers():
     else:
         return jsonify(result), 401
     
-@app.route('/api/v1/prayer', methods=['POST'])
+@app.route('/api/v1/prayer-by-id', methods=['POST'])
 @jwt_token_required.token_required
 def getPrayerById():
     getPrayersService = PrayerService()
@@ -77,7 +77,7 @@ def getFavoritePrayersByUser():
     else:
         return jsonify(result), 401
     
-@app.route('/api/v1/user/favorite-prayers', methods=['DELETE'])
+@app.route('/api/v1/user/favorite-prayer', methods=['DELETE'])
 @jwt_token_required.token_required
 def removeFavoritePrayer():
     getPrayersService = PrayerService()

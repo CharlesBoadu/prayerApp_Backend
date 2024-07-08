@@ -427,18 +427,20 @@ class PassportService:
 
             # # auth_client = Passport()
             salt = generate_salt()
-            hashed_password = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), salt, 100000)
+            # hashed_password = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), salt, 100000)
             # print("Hashed password", hashed_password)
 
-            cursor.execute("UPDATE passport SET password = %s WHERE id = %s", (hashed_password, 1))
+            # cursor.execute("UPDATE passport SET password = %s WHERE id = %s", (hashed_password, 1))
 
             cursor.execute("SELECT * FROM passport WHERE client_id = %s AND username = %s", (client_id, username))
             res = cursor.fetchone()
             # auth_client.get_by_username(client_id=client_id,username=username)
 
             hashed_password = res[3]
+            print("Hashed password", hashed_password)
 
-            password_check = utils.verify_password(hashed_password, password)
+            password_check = hashed_password == password
+            # utils.verify_password(hashed_password, password)
 
             if password_check:
                 payload = {
